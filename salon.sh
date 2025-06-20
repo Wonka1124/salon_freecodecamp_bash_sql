@@ -5,24 +5,24 @@ PSQL="psql --username=freecodecamp --dbname=salon -t --no-align -c"
 echo -e "\n~~~~~ MY SALON ~~~~~\n"
 echo "Welcome to My Salon, how can I help you?"
 
-# Выводим список услуг
+
 SERVICES=$($PSQL "SELECT service_id, name FROM services ORDER BY service_id")
 echo "$SERVICES" | while IFS="|" read SERVICE_ID NAME
 do
   echo "$SERVICE_ID) $NAME"
 done
 
-# Получаем ID услуги
+
 read SERVICE_ID_SELECTED
 
-# Проверяем, существует ли такая услуга
+
 SERVICE_NAME=$($PSQL "SELECT name FROM services WHERE service_id = $SERVICE_ID_SELECTED")
 
 if [[ -z $SERVICE_NAME ]]
 then
   echo -e "\nI could not find that service. What would you like today?"
   
-  # Повторно выводим список
+
   echo "$SERVICES" | while IFS="|" read SERVICE_ID NAME
   do
     echo "$SERVICE_ID) $NAME"
@@ -32,11 +32,11 @@ then
   SERVICE_NAME=$($PSQL "SELECT name FROM services WHERE service_id = $SERVICE_ID_SELECTED")
 fi
 
-# Получаем номер телефона клиента
+
 echo -e "\nWhat's your phone number?"
 read CUSTOMER_PHONE
 
-# Ищем клиента по телефону
+
 CUSTOMER_ID=$($PSQL "SELECT customer_id FROM customers WHERE phone = '$CUSTOMER_PHONE'")
 
 if [[ -z $CUSTOMER_ID ]]
